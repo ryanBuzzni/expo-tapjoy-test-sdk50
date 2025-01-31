@@ -1,0 +1,280 @@
+{
+  "cli": {
+    "version": ">= 1.0.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development-client": {
+      "channel": "development-client",
+      "distribution": "internal",
+      "developmentClient": true,
+      "android": {
+        "image": "ubuntu-18.04-jdk-11-ndk-r19c"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "APP_ENV": "development"
+      }
+    },
+    "development-client-device": {
+      "channel": "development-client",
+      "distribution": "internal",
+      "developmentClient": true,
+      "env": {
+        "APP_ENV": "development"
+      }
+    },
+    "development": {
+      "channel": "development",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "ios": {
+        "credentialsSource": "local"
+      },
+      "env": {
+        "APP_ENV": "development"
+      }
+    },
+    "stage-client": {
+      "channel": "stage-client",
+      "distribution": "internal",
+      "developmentClient": true,
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "ios": {
+        "simulator": true,
+        "credentialsSource": "local"
+      },
+      "env": {
+        "APP_ENV": "stage"
+      }
+    },
+    "stage-client-device": {
+      "channel": "stage-client",
+      "distribution": "internal",
+      "developmentClient": true,
+      "env": {
+        "APP_ENV": "stage"
+      },
+      "ios": {
+        "credentialsSource": "local"
+      }
+    },
+    "stage": {
+      "channel": "stage",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "ios": {
+        "cocoapods": "1.12.0"
+      },
+      "env": {
+        "APP_ENV": "stage"
+      }
+    },
+    "preview": {
+      "channel": "preview",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "ios": {
+        "cocoapods": "1.13.0"
+      },
+      "env": {
+        "APP_ENV": "production"
+      }
+    },
+    "production-notifee": {
+      "channel": "production-notifee",
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "env": {
+        "APP_ENV": "production"
+      }
+    },
+    "production-apk": {
+      "channel": "production",
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "env": {
+        "APP_ENV": "production"
+      }
+    },
+    "preview-ios": {
+      "channel": "preview-ios",
+      "env": {
+        "APP_ENV": "production"
+      }
+    },
+    "stage-ios": {
+      "channel": "stage-ios",
+      "env": {
+        "APP_ENV": "stage"
+      }
+    },
+    "production": {
+      "channel": "production",
+      "android": {
+        "image": "latest"
+      },
+      "ios": {
+        "credentialsSource": "local"
+      },
+      "env": {
+        "APP_ENV": "production"
+      }
+    },
+    "brom": {
+      "channel": "brom",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_ENV": "production"
+      }
+    },
+    "brom-stage": {
+      "channel": "brom-stage",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_ENV": "stage"
+      }
+    },
+    "brom-client": {
+      "channel": "brom-client",
+      "distribution": "internal",
+      "developmentClient": true,
+      "ios": {
+        "simulator": true
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_ENV": "stage"
+      }
+    },
+    "phillip": {
+      "channel": "phillip",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_ENV": "production"
+      }
+    },
+    "ccoli": {
+      "channel": "ccoli",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_ENV": "production"
+      }
+    },
+    "ccoli-client": {
+      "channel": "ccoli-client",
+      "distribution": "internal",
+      "developmentClient": true,
+      "ios": {
+        "cocoapods": "1.13.0",
+        "simulator": true
+      },
+      "env": {
+        "APP_ENV": "stage"
+      }
+    },
+    "jay": {
+      "channel": "jay",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "credentialsSource": "local"
+      },
+      "env": {
+        "APP_ENV": "production"
+      }
+    },
+    "jay-client": {
+      "channel": "jay-client",
+      "distribution": "internal",
+      "developmentClient": true,
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_ENV": "stage"
+      }
+    },
+    "jay-client-sim": {
+      "channel": "jay-client",
+      "distribution": "internal",
+      "developmentClient": true,
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "APP_ENV": "stage"
+      }
+    },
+    "oskar": {
+      "channel": "oskar",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_ENV": "stage"
+      }
+    },
+    "ryan": {
+      "channel": "ryan",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_ENV": "production"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "../path/to/api-xxx-yyy-zzz.json",
+        "track": "internal"
+      },
+      "ios": {
+        "appleId": "ryan@buzzni.com",
+        "ascAppId": "616581116",
+        "appleTeamId": "36C77K9BJ2"
+      }
+    }
+  }
+}

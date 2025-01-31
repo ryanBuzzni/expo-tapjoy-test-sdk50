@@ -1,16 +1,16 @@
 import {
-	ConfigPlugin,
-	createRunOncePlugin,
-	withAppBuildGradle,
-	withDangerousMod,
-	withProjectBuildGradle,
-} from '@expo/config-plugins'
-import { readFileSync, writeFileSync } from 'fs'
-import path from 'path'
+  ConfigPlugin,
+  createRunOncePlugin,
+  withAppBuildGradle,
+  withDangerousMod,
+  withProjectBuildGradle,
+} from "@expo/config-plugins";
+import { readFileSync, writeFileSync } from "fs";
+import path from "path";
 
 // 중복되는 post_install 블록을 함수로 분리
 function addPostInstallBlock(podfileContent: string): string {
-	const postInstallBlock = `
+  const postInstallBlock = `
 	post_install do |installer|
 		installer.pods_project.targets.each do |target|
 			target.build_configurations.each do |config|
@@ -27,85 +27,91 @@ function addPostInstallBlock(podfileContent: string): string {
 				end
 			end
 		end
-	`
+	`;
 
-	const hasPostInstall = podfileContent.includes('post_install do |installer|')
-	if (!hasPostInstall) {
-		return podfileContent + postInstallBlock + '\nend'
-	}
+  const hasPostInstall = podfileContent.includes("post_install do |installer|");
+  if (!hasPostInstall) {
+    return podfileContent + postInstallBlock + "\nend";
+  }
 
-	if (hasPostInstall) {
-		return podfileContent.replace(/post_install do \|installer\|/, postInstallBlock)
-	}
+  if (hasPostInstall) {
+    return podfileContent.replace(
+      /post_install do \|installer\|/,
+      postInstallBlock
+    );
+  }
 
-	return podfileContent
+  return podfileContent;
 }
 
-const withTapjoy: ConfigPlugin = config => {
-	// 프로젝트 레벨 build.gradle 수정
-	config = withProjectBuildGradle(config, config => {
-		const buildGradle = config.modResults.contents
+const withTapjoy: ConfigPlugin = (config) => {
+  // 프로젝트 레벨 build.gradle 수정
+  config = withProjectBuildGradle(config, (config) => {
+    const buildGradle = config.modResults.contents;
 
-		if (!buildGradle.includes('https://sdk.tapjoy.com/')) {
-			config.modResults.contents = buildGradle.replace(
-				/(maven\s*{\s*url\s*'https:\/\/www\.jitpack\.io'\s*})/,
-				`$1
+    if (!buildGradle.includes("https://sdk.tapjoy.com/")) {
+      config.modResults.contents = buildGradle.replace(
+        /(maven\s*{\s*url\s*'https:\/\/www\.jitpack\.io'\s*})/,
+        `$1
         maven {
 					name "Tapjoy's maven repo"
 					url "https://sdk.tapjoy.com/"
         }`
-			)
-		}
-		return config
-	})
+      );
+    }
+    return config;
+  });
 
-	// Android 설정
-	config = withAppBuildGradle(config, config => {
-		const buildGradle = config.modResults.contents
+  // Android 설정
+  config = withAppBuildGradle(config, (config) => {
+    const buildGradle = config.modResults.contents;
 
-		// Tapjoy 의존성 추가
-		if (!buildGradle.includes('com.tapjoy:tapjoy-android-sdk:14.2.1')) {
-			config.modResults.contents = buildGradle.replace(
-				/dependencies\s*{/,
-				`dependencies {
+    // Tapjoy 의존성 추가
+    if (!buildGradle.includes("com.tapjoy:tapjoy-android-sdk:14.2.1")) {
+      config.modResults.contents = buildGradle.replace(
+        /dependencies\s*{/,
+        `dependencies {
     implementation 'com.tapjoy:tapjoy-android-sdk:14.2.1'
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.10'`
-			)
-		}
+      );
+    }
 
-		return config
-	})
+    return config;
+  });
 
-	// iOS 설정
-	config = withDangerousMod(config, [
-		'ios',
-		async config => {
-			const podfilePath = path.join(config.modRequest.platformProjectRoot, 'Podfile')
-			let podfileContent = readFileSync(podfilePath, 'utf-8')
+  // iOS 설정
+  config = withDangerousMod(config, [
+    "ios",
+    async (config) => {
+      const podfilePath = path.join(
+        config.modRequest.platformProjectRoot,
+        "Podfile"
+      );
+      let podfileContent = readFileSync(podfilePath, "utf-8");
 
-			// TapjoySDK 추가
-			if (!podfileContent.includes("pod 'TapjoySDK', '14.2.1'")) {
-				podfileContent = podfileContent.replace(
-					/target\s+'[^']+'\s+do/,
-					`
+      // TapjoySDK 추가
+      if (!podfileContent.includes("pod 'TapjoySDK', '14.2.1'")) {
+        podfileContent = podfileContent.replace(
+          /target\s+'[^']+'\s+do/,
+          `
 target '${config.modRequest.projectName}' do
 	pod 'TapjoySDK', '14.2.1'
 					`
-				)
-			}
+        );
+      }
 
-			// use_frameworks! 추가
-			if (!podfileContent.includes('use_frameworks!')) {
-				podfileContent = podfileContent.replace(
-					/platform\s+:ios,\s*'[^']+'/,
-					`platform :ios, '13.0'\nuse_frameworks!\nuse_modular_headers!`
-				)
-			}
+      // use_frameworks! 추가
+      if (!podfileContent.includes("use_frameworks!")) {
+        podfileContent = podfileContent.replace(
+          /platform\s+:ios,\s*'[^']+'/,
+          `platform :ios, '13.0'\nuse_frameworks!\nuse_modular_headers!`
+        );
+      }
 
-			// New Architecture 추가
-			if (!podfileContent.includes("ENV['RCT_NEW_ARCH_ENABLED']")) {
-				podfileContent += `
+      // New Architecture 추가
+      if (!podfileContent.includes("ENV['RCT_NEW_ARCH_ENABLED']")) {
+        podfileContent += `
 	
 	if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
 		pod 'React-Codegen'
@@ -114,18 +120,18 @@ target '${config.modRequest.projectName}' do
 		pod 'RCTTypeSafety'
 		pod 'ReactCommon/turbomodule/core'
 	end
-				`
-			}
+				`;
+      }
 
-			// post_install 블록 추가
-			podfileContent = addPostInstallBlock(podfileContent)
+      // post_install 블록 추가
+      // podfileContent = addPostInstallBlock(podfileContent)
 
-			writeFileSync(podfilePath, podfileContent)
-			return config
-		},
-	])
+      writeFileSync(podfilePath, podfileContent);
+      return config;
+    },
+  ]);
 
-	return config
-}
+  return config;
+};
 
-export default createRunOncePlugin(withTapjoy, 'with-tapjoy', '1.0.0')
+export default createRunOncePlugin(withTapjoy, "with-tapjoy", "1.0.0");

@@ -26,20 +26,20 @@ function addPostInstallBlock(podfileContent) {
 			end
 		end
 	`;
-    const hasPostInstall = podfileContent.includes('post_install do |installer|');
+    const hasPostInstall = podfileContent.includes("post_install do |installer|");
     if (!hasPostInstall) {
-        return podfileContent + postInstallBlock + '\nend';
+        return podfileContent + postInstallBlock + "\nend";
     }
     if (hasPostInstall) {
         return podfileContent.replace(/post_install do \|installer\|/, postInstallBlock);
     }
     return podfileContent;
 }
-const withTapjoy = config => {
+const withTapjoy = (config) => {
     // 프로젝트 레벨 build.gradle 수정
-    config = (0, config_plugins_1.withProjectBuildGradle)(config, config => {
+    config = (0, config_plugins_1.withProjectBuildGradle)(config, (config) => {
         const buildGradle = config.modResults.contents;
-        if (!buildGradle.includes('https://sdk.tapjoy.com/')) {
+        if (!buildGradle.includes("https://sdk.tapjoy.com/")) {
             config.modResults.contents = buildGradle.replace(/(maven\s*{\s*url\s*'https:\/\/www\.jitpack\.io'\s*})/, `$1
         maven {
 					name "Tapjoy's maven repo"
@@ -49,10 +49,10 @@ const withTapjoy = config => {
         return config;
     });
     // Android 설정
-    config = (0, config_plugins_1.withAppBuildGradle)(config, config => {
+    config = (0, config_plugins_1.withAppBuildGradle)(config, (config) => {
         const buildGradle = config.modResults.contents;
         // Tapjoy 의존성 추가
-        if (!buildGradle.includes('com.tapjoy:tapjoy-android-sdk:14.2.1')) {
+        if (!buildGradle.includes("com.tapjoy:tapjoy-android-sdk:14.2.1")) {
             config.modResults.contents = buildGradle.replace(/dependencies\s*{/, `dependencies {
     implementation 'com.tapjoy:tapjoy-android-sdk:14.2.1'
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
@@ -62,10 +62,10 @@ const withTapjoy = config => {
     });
     // iOS 설정
     config = (0, config_plugins_1.withDangerousMod)(config, [
-        'ios',
+        "ios",
         async (config) => {
-            const podfilePath = path_1.default.join(config.modRequest.platformProjectRoot, 'Podfile');
-            let podfileContent = (0, fs_1.readFileSync)(podfilePath, 'utf-8');
+            const podfilePath = path_1.default.join(config.modRequest.platformProjectRoot, "Podfile");
+            let podfileContent = (0, fs_1.readFileSync)(podfilePath, "utf-8");
             // TapjoySDK 추가
             if (!podfileContent.includes("pod 'TapjoySDK', '14.2.1'")) {
                 podfileContent = podfileContent.replace(/target\s+'[^']+'\s+do/, `
@@ -74,7 +74,7 @@ target '${config.modRequest.projectName}' do
 					`);
             }
             // use_frameworks! 추가
-            if (!podfileContent.includes('use_frameworks!')) {
+            if (!podfileContent.includes("use_frameworks!")) {
                 podfileContent = podfileContent.replace(/platform\s+:ios,\s*'[^']+'/, `platform :ios, '13.0'\nuse_frameworks!\nuse_modular_headers!`);
             }
             // New Architecture 추가
@@ -91,11 +91,11 @@ target '${config.modRequest.projectName}' do
 				`;
             }
             // post_install 블록 추가
-            podfileContent = addPostInstallBlock(podfileContent);
+            // podfileContent = addPostInstallBlock(podfileContent)
             (0, fs_1.writeFileSync)(podfilePath, podfileContent);
             return config;
         },
     ]);
     return config;
 };
-exports.default = (0, config_plugins_1.createRunOncePlugin)(withTapjoy, 'with-tapjoy', '1.0.0');
+exports.default = (0, config_plugins_1.createRunOncePlugin)(withTapjoy, "with-tapjoy", "1.0.0");

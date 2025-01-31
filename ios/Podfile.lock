@@ -1071,6 +1071,9 @@ PODS:
     - React-logger (= 0.73.6)
     - React-perflogger (= 0.73.6)
   - SocketRocket (0.6.1)
+  - tapjoy-react-native-sdk (14.2.1):
+    - React-Core
+    - TapjoySDK (= 14.2.1)
   - TapjoySDK (14.2.1):
     - TapjoySDK/Static (= 14.2.1)
   - TapjoySDK/Static (14.2.1)
@@ -1133,6 +1136,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - tapjoy-react-native-sdk (from `../node_modules/tapjoy-react-native-sdk`)
   - TapjoySDK (= 14.2.1)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1251,6 +1255,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  tapjoy-react-native-sdk:
+    :path: "../node_modules/tapjoy-react-native-sdk"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1311,9 +1317,10 @@ SPEC CHECKSUMS:
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  tapjoy-react-native-sdk: 358125bc668b8f7113451214ca41ddb42e66a751
   TapjoySDK: 419f6cb7d166c8df86c04ee4ecd950e23979e2c6
   Yoga: 805bf71192903b20fc14babe48080582fee65a80
 
-PODFILE CHECKSUM: 9edd758f7f403ba2ebd66adf90617a749c104e61
+PODFILE CHECKSUM: 4c86d3bf7935543f5eae609841d6123c770bb53a
 
 COCOAPODS: 1.16.2

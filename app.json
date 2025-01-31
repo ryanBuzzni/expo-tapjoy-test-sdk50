@@ -32,6 +32,15 @@
       [
         "./plugins/build/withTapjoy.js"
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "340f10b2-5014-42d6-ab23-9110c2a9f4f4"
+      }
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/340f10b2-5014-42d6-ab23-9110c2a9f4f4"
+    }
   }
 }
